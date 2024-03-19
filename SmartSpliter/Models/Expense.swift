@@ -10,15 +10,18 @@ import SwiftData
 
 @Model
 class Expense {
+    var id = UUID()
     var expenseName: String
-    var owner: ExpenseMember
+    var owner: ExpenseMember?
     var amount: Double
     var members: [ExpenseMember]
+    @Relationship(inverse: \Event.expenses) var event: Event?
     
-    init(expenseName: String, owner: ExpenseMember, amount: Double, members: [ExpenseMember]) {
+    init(expenseName: String = "", owner: ExpenseMember, amount: Double, members: [ExpenseMember], event: Event? = nil) {
         self.expenseName = expenseName
         self.owner = owner
         self.amount = amount
         self.members = members
+        self.event = event
     }
 }

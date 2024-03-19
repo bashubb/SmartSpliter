@@ -13,7 +13,7 @@ class ExpenseMember {
     var id = UUID()
     var expenseAmount: Double
     var person: Person
-    var expense: Expense
+    var expense: Expense?
     
     init(expenseAmount: Double, person: Person, expense: Expense) {
         self.expenseAmount = expenseAmount

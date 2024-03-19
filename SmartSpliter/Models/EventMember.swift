@@ -13,7 +13,7 @@ class EventMember {
     var id = UUID()
     var wallet: Double
     var person: Person
-    var event: Event
+    var event: Event?
     
     init(eventAmount: Double, person: Person, event: Event) {
         self.wallet = eventAmount
