@@ -14,35 +14,49 @@ struct AddEditEventView: View {
     @Bindable var event: Event
     var body: some View {
         List {
-            
             // Summary of this event
-            
-            TextField("Name", text: $event.eventName)
+            Section("Event Details") {
+                TextField("Name", text: $event.eventName)
+            }
             
             // Add some people from contacts or create
-            ImportPersonView()
-            // List of members - total amounts for person - delete posibility
-            ForEach(event.eventMembers) { eventMember in
-                VStack {
-                    HStack {
-                        Text(eventMember.person.firstName)
-                        Text(eventMember.person.lastName)
-                    }
-                    .font(.headline)
-                    
-                    Group {
-                        Text(eventMember.person.phoneNumber)
-                        Text("\(eventMember.wallet)")
-                    }
-                    .font(.caption)
+            Section("Members") {
+                NavigationLink("Add some people") {
+                    AddMemberView(event: event)
                 }
+                // List of members - total amounts for person - delete posibility
+                Text("List of people")
+                ForEach(event.eventMembers) { eventMember in
+                    VStack {
+                        HStack {
+                            Text(eventMember.person.firstName)
+                            Text(eventMember.person.lastName)
+                        }
+                        .font(.headline)
+                        
+                        Group {
+                            Text(eventMember.person.phoneNumber)
+                            Text("\(eventMember.wallet)")
+                        }
+                        .font(.caption)
+                    }
+                }
+                .onDelete(perform: deleteEventMember)
             }
-            .onDelete(perform: deleteEventMember)
             
-            // Add some expense
-            AddEditExpenseView()
-            // List of expenses - delete possibility - expense detailView(choose who from members is contributing in this expense - list of members - removable, how to split?(equaly, fixed amount, summary? )
+            Section("Expenses") {
+                // Add some expense
+                NavigationLink("Add Some expenses") {
+                    AddEditExpenseView()
+                }
+        
+                
+                
+                // List of expenses - delete possibility - expense detailView(choose who from members is contributing in this expense - list of members - removable, how to split?(equaly, fixed amount, summary? )
+                Text("List of expenses")
+            }
         }
+        .navigationTitle("EditEvent")
     }
     
     func deleteEventMember(_ indexSet: IndexSet) {
@@ -58,10 +72,12 @@ struct AddEditEventView: View {
     do {
         let config = ModelConfiguration(isStoredInMemoryOnly: true)
         let container = try ModelContainer(for: Event.self, configurations: config)
-        let event = Event(eventName: "Mountains")
+        let event = Event(eventName: "Mountain Weekend")
         
-        return AddEditEventView(event: event)
-            .modelContainer(container)
+        return NavigationStack{
+            AddEditEventView(event: event)
+                .modelContainer(container)
+        }
     } catch {
         return Text("Failed to create container: \(error.localizedDescription)")
     }

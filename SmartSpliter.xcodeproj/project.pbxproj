@@ -17,11 +17,17 @@
 		B502A7C22BAA32B700FCA90F /* EventMember.swift in Sources */ = {isa = PBXBuildFile; fileRef = B502A7C12BAA32B700FCA90F /* EventMember.swift */; };
 		B502A7C42BAA32CC00FCA90F /* ExpenseMember.swift in Sources */ = {isa = PBXBuildFile; fileRef = B502A7C32BAA32CC00FCA90F /* ExpenseMember.swift */; };
 		B502A7C72BAA3A7700FCA90F /* AddEditEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B502A7C62BAA3A7700FCA90F /* AddEditEventView.swift */; };
-		B5D48FB02BAAC85B00FAB590 /* AddEditPersonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D48FAF2BAAC85B00FAB590 /* AddEditPersonView.swift */; };
+		B5D48FB02BAAC85B00FAB590 /* EditMemberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D48FAF2BAAC85B00FAB590 /* EditMemberView.swift */; };
 		B5D48FB22BAAC86B00FAB590 /* AddMemberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D48FB12BAAC86B00FAB590 /* AddMemberView.swift */; };
 		B5D48FB42BAAC8C200FAB590 /* AddEditExpenseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D48FB32BAAC8C200FAB590 /* AddEditExpenseView.swift */; };
 		B5D48FB82BAAC9B800FAB590 /* ImportPersonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D48FB72BAAC9B800FAB590 /* ImportPersonView.swift */; };
 		B5D48FBC2BAACCCD00FAB590 /* ContactManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D48FBB2BAACCCD00FAB590 /* ContactManager.swift */; };
+		B5D48FBE2BAACE6B00FAB590 /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D48FBD2BAACE6B00FAB590 /* Contact.swift */; };
+		B5D48FC02BAACE9800FAB590 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D48FBF2BAACE9800FAB590 /* StringExtensions.swift */; };
+		B5D48FC22BAACFDE00FAB590 /* FilteringList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D48FC12BAACFDE00FAB590 /* FilteringList.swift */; };
+		B5D48FC42BAAD00000FAB590 /* MultiSelectionRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D48FC32BAAD00000FAB590 /* MultiSelectionRow.swift */; };
+		B5D48FC62BAAD01000FAB590 /* Row.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D48FC52BAAD01000FAB590 /* Row.swift */; };
+		B5D48FC82BAAD80100FAB590 /* AddNewPersonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D48FC72BAAD80100FAB590 /* AddNewPersonView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,11 +42,17 @@
 		B502A7C12BAA32B700FCA90F /* EventMember.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventMember.swift; sourceTree = "<group>"; };
 		B502A7C32BAA32CC00FCA90F /* ExpenseMember.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseMember.swift; sourceTree = "<group>"; };
 		B502A7C62BAA3A7700FCA90F /* AddEditEventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEditEventView.swift; sourceTree = "<group>"; };
-		B5D48FAF2BAAC85B00FAB590 /* AddEditPersonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEditPersonView.swift; sourceTree = "<group>"; };
+		B5D48FAF2BAAC85B00FAB590 /* EditMemberView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMemberView.swift; sourceTree = "<group>"; };
 		B5D48FB12BAAC86B00FAB590 /* AddMemberView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMemberView.swift; sourceTree = "<group>"; };
 		B5D48FB32BAAC8C200FAB590 /* AddEditExpenseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEditExpenseView.swift; sourceTree = "<group>"; };
 		B5D48FB72BAAC9B800FAB590 /* ImportPersonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportPersonView.swift; sourceTree = "<group>"; };
 		B5D48FBB2BAACCCD00FAB590 /* ContactManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactManager.swift; sourceTree = "<group>"; };
+		B5D48FBD2BAACE6B00FAB590 /* Contact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
+		B5D48FBF2BAACE9800FAB590 /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
+		B5D48FC12BAACFDE00FAB590 /* FilteringList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilteringList.swift; sourceTree = "<group>"; };
+		B5D48FC32BAAD00000FAB590 /* MultiSelectionRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiSelectionRow.swift; sourceTree = "<group>"; };
+		B5D48FC52BAAD01000FAB590 /* Row.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Row.swift; sourceTree = "<group>"; };
+		B5D48FC72BAAD80100FAB590 /* AddNewPersonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewPersonView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,8 +88,8 @@
 				B502A7AC2BAA28C700FCA90F /* SmartSpliterApp.swift */,
 				B502A7BA2BAA28DA00FCA90F /* Models */,
 				B502A7C52BAA3A4300FCA90F /* Views */,
-				B5D48FB92BAACCA700FAB590 /* Helpers */,
 				B5D48FBA2BAACCB000FAB590 /* CustomComponents */,
+				B5D48FB92BAACCA700FAB590 /* Helpers */,
 				B502A7B02BAA28C900FCA90F /* Assets.xcassets */,
 				B502A7B22BAA28C900FCA90F /* Preview Content */,
 			);
@@ -109,10 +121,11 @@
 			children = (
 				B502A7AE2BAA28C700FCA90F /* ContentView.swift */,
 				B502A7C62BAA3A7700FCA90F /* AddEditEventView.swift */,
-				B5D48FAF2BAAC85B00FAB590 /* AddEditPersonView.swift */,
-				B5D48FB72BAAC9B800FAB590 /* ImportPersonView.swift */,
 				B5D48FB32BAAC8C200FAB590 /* AddEditExpenseView.swift */,
 				B5D48FB12BAAC86B00FAB590 /* AddMemberView.swift */,
+				B5D48FC72BAAD80100FAB590 /* AddNewPersonView.swift */,
+				B5D48FB72BAAC9B800FAB590 /* ImportPersonView.swift */,
+				B5D48FAF2BAAC85B00FAB590 /* EditMemberView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -121,6 +134,8 @@
 			isa = PBXGroup;
 			children = (
 				B5D48FBB2BAACCCD00FAB590 /* ContactManager.swift */,
+				B5D48FBD2BAACE6B00FAB590 /* Contact.swift */,
+				B5D48FBF2BAACE9800FAB590 /* StringExtensions.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -128,6 +143,9 @@
 		B5D48FBA2BAACCB000FAB590 /* CustomComponents */ = {
 			isa = PBXGroup;
 			children = (
+				B5D48FC12BAACFDE00FAB590 /* FilteringList.swift */,
+				B5D48FC32BAAD00000FAB590 /* MultiSelectionRow.swift */,
+				B5D48FC52BAAD01000FAB590 /* Row.swift */,
 			);
 			path = CustomComponents;
 			sourceTree = "<group>";
@@ -204,16 +222,22 @@
 			files = (
 				B5D48FBC2BAACCCD00FAB590 /* ContactManager.swift in Sources */,
 				B502A7C22BAA32B700FCA90F /* EventMember.swift in Sources */,
-				B5D48FB02BAAC85B00FAB590 /* AddEditPersonView.swift in Sources */,
+				B5D48FC82BAAD80100FAB590 /* AddNewPersonView.swift in Sources */,
+				B5D48FB02BAAC85B00FAB590 /* EditMemberView.swift in Sources */,
 				B5D48FB82BAAC9B800FAB590 /* ImportPersonView.swift in Sources */,
+				B5D48FC42BAAD00000FAB590 /* MultiSelectionRow.swift in Sources */,
 				B5D48FB42BAAC8C200FAB590 /* AddEditExpenseView.swift in Sources */,
 				B502A7BE2BAA29A500FCA90F /* Event.swift in Sources */,
+				B5D48FBE2BAACE6B00FAB590 /* Contact.swift in Sources */,
 				B502A7C42BAA32CC00FCA90F /* ExpenseMember.swift in Sources */,
 				B502A7BC2BAA28F400FCA90F /* Person.swift in Sources */,
+				B5D48FC62BAAD01000FAB590 /* Row.swift in Sources */,
 				B502A7AF2BAA28C700FCA90F /* ContentView.swift in Sources */,
 				B5D48FB22BAAC86B00FAB590 /* AddMemberView.swift in Sources */,
 				B502A7C72BAA3A7700FCA90F /* AddEditEventView.swift in Sources */,
+				B5D48FC02BAACE9800FAB590 /* StringExtensions.swift in Sources */,
 				B502A7AD2BAA28C700FCA90F /* SmartSpliterApp.swift in Sources */,
+				B5D48FC22BAACFDE00FAB590 /* FilteringList.swift in Sources */,
 				B502A7C02BAA2A4200FCA90F /* Expense.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -351,6 +375,7 @@
 				DEVELOPMENT_TEAM = F43F5V3HNZ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSContactsUsageDescription = "Please let fetch your contacts";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -380,6 +405,7 @@
 				DEVELOPMENT_TEAM = F43F5V3HNZ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSContactsUsageDescription = "Please let fetch your contacts";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
