@@ -5,6 +5,7 @@
 //  Created by HubertMac on 19/03/2024.
 //
 
+import SwiftData
 import SwiftUI
 
 struct AddEditEventView: View {
@@ -27,6 +28,15 @@ struct AddEditEventView: View {
     }
 }
 
-//#Preview {
-//    AddEditEventView(event: Event())
-//}
+#Preview {
+    do {
+        let config = ModelConfiguration(isStoredInMemoryOnly: true)
+        let container = try ModelContainer(for: Event.self, configurations: config)
+        let event = Event(eventName: "Mountains")
+        
+        return AddEditEventView(event: event)
+            .modelContainer(container)
+    } catch {
+        return Text("Failed to create container: \(error.localizedDescription)")
+    }
+}
