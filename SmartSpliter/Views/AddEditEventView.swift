@@ -13,18 +13,44 @@ struct AddEditEventView: View {
     @Environment(\.dismiss) var dismiss
     @Bindable var event: Event
     var body: some View {
-        Form {
+        List {
             
             // Summary of this event
             
             TextField("Name", text: $event.eventName)
             
             // Add some people from contacts or create
+            ImportPersonView()
             // List of members - total amounts for person - delete posibility
+            ForEach(event.eventMembers) { eventMember in
+                VStack {
+                    HStack {
+                        Text(eventMember.person.firstName)
+                        Text(eventMember.person.lastName)
+                    }
+                    .font(.headline)
+                    
+                    Group {
+                        Text(eventMember.person.phoneNumber)
+                        Text("\(eventMember.wallet)")
+                    }
+                    .font(.caption)
+                }
+            }
+            .onDelete(perform: deleteEventMember)
             
-            // Add some expenss
+            // Add some expense
+            AddEditExpenseView()
             // List of expenses - delete possibility - expense detailView(choose who from members is contributing in this expense - list of members - removable, how to split?(equaly, fixed amount, summary? )
         }
+    }
+    
+    func deleteEventMember(_ indexSet: IndexSet) {
+        for index in indexSet {
+            let member = event.eventMembers[index]
+            modelContext.delete(member)
+        }
+        event.eventMembers.remove(atOffsets: indexSet)
     }
 }
 
