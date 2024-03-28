@@ -9,13 +9,13 @@ import Foundation
 import SwiftData
 
 @Model
-class EventMember {
+class EventMember: Hashable {
     var id = UUID()
     var wallet: Double
     var person: Person
-    var event: Event?
+    var event: Event
     
-    init(eventAmount: Double, person: Person, event: Event) {
+    init(eventAmount: Double = 0, person: Person = Person(), event: Event ) {
         self.wallet = eventAmount
         self.person = person
         self.event = event

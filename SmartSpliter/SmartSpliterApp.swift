@@ -10,10 +10,14 @@ import SwiftUI
 
 @main
 struct SmartSpliterApp: App {
+    @StateObject var router = Router()
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
                 .modelContainer(for: Event.self)
+                
         }
+        .environmentObject(router)
     }
 }

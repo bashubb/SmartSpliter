@@ -14,11 +14,13 @@ class Person {
     var firstName: String
     var lastName: String
     var phoneNumber: String
+    @Relationship (inverse: \EventMember.person) var eventMembers: [EventMember]
     
-    init(id: UUID = UUID(), firstName: String, lastName: String, phoneNumber: String) {
+    init(id: UUID = UUID(), firstName: String = "", lastName: String = "", phoneNumber: String = "", eventMembers: [EventMember] = []) {
         self.id = id
         self.firstName = firstName
         self.lastName = lastName
         self.phoneNumber = phoneNumber
+        self.eventMembers = eventMembers
     }
 }

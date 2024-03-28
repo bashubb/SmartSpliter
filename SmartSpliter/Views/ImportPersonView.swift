@@ -19,7 +19,7 @@ struct ImportPersonView: View {
     }
     
     var body: some View {
-        NavigationStack {
+        VStack {
             if !contacts.isEmpty {
                 FilteringList(contacts, filterKeys: \.firstName, \.lastName, \.phoneNumbers ) { contact in
                     MultiSelectionRow(id: contact.id, selectedItems: $selectedItems, content: Row(contact:contact))
@@ -49,7 +49,7 @@ struct ImportPersonView: View {
     }
     
     func fetchContact() {
-        // find id from selected items in contacts , and add them to fetched contacts
+        selectedItems.
     }
 }
 

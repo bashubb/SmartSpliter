@@ -5,20 +5,24 @@
 //  Created by HubertMac on 20/03/2024.
 //
 
+import SwiftData
 import SwiftUI
 
 struct AddMemberView: View {
+    var eventId: UUID
     
-    @State private var members = [EventMember]()
     @State var fetchedContacts = [Contact]()
+    @State private var showAddingView = false
+    
     // UI to change
     var body: some View {
-        VStack {
+       VStack {
             HStack{
                 
                 // button for add person by hand
                 Button("Add totally new person") {
-                    // AddNewPersonView by navigationLink with path passed?
+                    showAddingView = true
+                    
                     
                     // when added go to AddEditView
                     //confirmation dialog
@@ -34,15 +38,17 @@ struct AddMemberView: View {
                 .buttonStyle(.bordered)
                 .tint(.green)
                 
-                
-                
+             
             }
-            
             
             // screen for importing from contacts
             // fetch in contact format and convert to person and save as EventMembers
             ImportPersonView(fetchContacts: $fetchedContacts)
         }
+       .padding(.top, 20)
+       .sheet(isPresented: $showAddingView) {
+           AddNewPersonView(eventId: eventId)
+       }
     }
     
     func addMembers() {
@@ -51,5 +57,15 @@ struct AddMemberView: View {
 }
 
 #Preview {
-    AddMemberView()
+    do {
+        let config = ModelConfiguration(isStoredInMemoryOnly: true)
+        let container = try ModelContainer(for: Event.self, configurations: config)
+        
+        return NavigationStack{
+            AddMemberView(eventId: UUID())
+                .modelContainer(container)
+        }
+    } catch {
+        return Text("Failed to create container: \(error.localizedDescription)")
+    }
 }

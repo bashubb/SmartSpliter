@@ -15,7 +15,7 @@ class ExpenseMember {
     var person: Person
     var expense: Expense?
     
-    init(expenseAmount: Double, person: Person, expense: Expense) {
+    init(expenseAmount: Double = 0, person: Person = Person(), expense: Expense? = nil) {
         self.expenseAmount = expenseAmount
         self.person = person
         self.expense = expense

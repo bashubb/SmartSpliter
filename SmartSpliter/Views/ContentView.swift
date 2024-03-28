@@ -8,20 +8,22 @@
 import SwiftData
 import SwiftUI
 
+
 struct ContentView: View {
+    @EnvironmentObject var router: Router
     @Environment(\.modelContext) var modelContext
+    
     @Query var events: [Event]
     
-    @State private var path = [Event]()
     
     var body: some View {
-        NavigationStack(path: $path) {
+        NavigationStack(path: $router.path) {
             List{
                 ForEach(events) { event in
                     NavigationLink(value: event){
-                        VStack{
+                        VStack(alignment: .leading){
                             Text(event.eventName)
-                            
+                                .font(.headline)
                             Text(event.eventDate.formatted(date: .numeric, time:
                                     .omitted))
                         }
@@ -33,6 +35,15 @@ struct ContentView: View {
             .navigationDestination(for: Event.self){ event in
                 AddEditEventView(event: event)
             }
+            .navigationDestination(for: EventMember.self) { eventMember in
+                EditMemberView(eventMember: eventMember)
+            }
+            .navigationDestination(for: Expense.self) { expense in
+                AddEditExpenseView(expense: expense)
+            }
+            .navigationDestination(for: UUID.self) { id in
+                AddMemberView(eventId: id)
+            }
             .toolbar {
                 Button("Add Event", systemImage: "plus", action: addEvent)
             }
@@ -42,7 +53,7 @@ struct ContentView: View {
     func addEvent() {
         let event = Event()
         modelContext.insert(event)
-        path = [event]
+        router.path.append(event)
     }
     
     
@@ -56,4 +67,12 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
+        .environmentObject(Router())
+}
+
+
+enum NavigationType: String, Hashable {
+    case editEvent = "Edit Event"
+    case addMember = "Add Member"
+    case addExpense = "Add Expense"
 }
