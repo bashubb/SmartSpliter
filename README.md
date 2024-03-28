@@ -1,4 +1,4 @@
-<img src="https://github.com/bashubb/SmartSpliter/blob/main/SpliterIcon.png" width="15%"/> <h1>ChuckNorrisJokeApp</h1>
+<img src="https://github.com/bashubb/SmartSpliter/blob/main/SpliterIcon.png" width="15%"/> 
 
 
 # Smart Spliter
