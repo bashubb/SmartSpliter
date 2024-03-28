@@ -1,4 +1,6 @@
-<img src="https://github.com/bashubb/SmartSpliter/blob/main/SpliterIcon.png" width="15%"/> 
+<img src="https://github.com/bashubb/ApolloExplorer/blob/main/Under%20Construction.png"/>
+
+<img src="https://github.com/bashubb/SmartSpliter/blob/main/SpliterIcon.png" width="20%"/> 
 
 
 # Smart Spliter
