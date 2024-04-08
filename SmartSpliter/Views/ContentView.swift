@@ -18,20 +18,36 @@ struct ContentView: View {
     
     var body: some View {
         NavigationStack(path: $router.path) {
-            List{
-                ForEach(events) { event in
-                    NavigationLink(value: event){
-                        VStack(alignment: .leading){
-                            Text(event.eventName)
-                                .font(.headline)
-                            Text(event.eventDate.formatted(date: .numeric, time:
-                                    .omitted))
+            VStack {
+                if events.isEmpty {
+                    Button {
+                        addEvent()
+                    } label: {
+                        ContentUnavailableView{
+                            Label("No events", systemImage: "plus.square.dashed")
+                        } description: {
+                            Text("For now, you have no events, tap to add some")
+                        }
+                    }
+                } else {
+                    List{
+                        Section("Events") {
+                            ForEach(events) { event in
+                                NavigationLink(value: event){
+                                    VStack(alignment: .leading){
+                                        Text(event.eventName)
+                                            .font(.headline)
+                                        Text(event.eventDate.formatted(date: .numeric, time:
+                                                .omitted))
+                                    }
+                                }
+                            }
+                            .onDelete(perform: deleteEvent)
                         }
                     }
                 }
-                .onDelete(perform: deleteEvent)
             }
-            .navigationTitle("Events")
+            .navigationTitle("SmartSpliter")
             .navigationDestination(for: Event.self){ event in
                 AddEditEventView(event: event)
             }
@@ -45,7 +61,9 @@ struct ContentView: View {
                 AddMemberView(eventId: id)
             }
             .toolbar {
-                Button("Add Event", systemImage: "plus", action: addEvent)
+                if events.isNotEmpty {
+                    Button("Add Event", systemImage: "plus", action: addEvent)
+                }
             }
         }
     }

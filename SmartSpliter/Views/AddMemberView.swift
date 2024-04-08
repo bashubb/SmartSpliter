@@ -11,8 +11,11 @@ import SwiftUI
 struct AddMemberView: View {
     var eventId: UUID
     
+    @Environment(\.modelContext) var modelContext
     @State var fetchedContacts = [Contact]()
     @State private var showAddingView = false
+    @Query var events: [Event]
+    
     
     // UI to change
     var body: some View {
@@ -33,7 +36,7 @@ struct AddMemberView: View {
                 
                 // add choosen contacts to event
                 Button("Add choosen to event"){
-                    
+                    addMembersFromContacts()
                 }
                 .buttonStyle(.bordered)
                 .tint(.green)
@@ -51,9 +54,28 @@ struct AddMemberView: View {
        }
     }
     
-    func addMembers() {
-        // convert Contact from fetchedContacts to Person and add to EventMember
+    func addMembersFromContacts() {
+        for contact in fetchedContacts {
+            print(contact.id)
+            let newPerson =
+            Person(
+                id: contact.id,
+                firstName: contact.firstName,
+                lastName: contact.lastName,
+                phoneNumber: contact.phoneNumbers.components(separatedBy: ",").first?.trimmed() ?? ""
+            )
+            let currentEventIndex = events.firstIndex { $0.id == eventId }!
+            let currentEvent = events[currentEventIndex]
+            if currentEvent.eventMembers.contains(where: { $0.id == newPerson.id }) {
+                return
+            } else {
+                let newEventMember = EventMember(person: newPerson, event: currentEvent)
+                currentEvent.eventMembers.append(newEventMember)
+            }
+        }
     }
+    
+    
 }
 
 #Preview {

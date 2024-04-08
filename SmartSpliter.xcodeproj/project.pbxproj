@@ -29,6 +29,7 @@
 		B5D48FC62BAAD01000FAB590 /* Row.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D48FC52BAAD01000FAB590 /* Row.swift */; };
 		B5D48FC82BAAD80100FAB590 /* AddNewPersonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D48FC72BAAD80100FAB590 /* AddNewPersonView.swift */; };
 		B5D48FCA2BAB73A200FAB590 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D48FC92BAB73A200FAB590 /* Router.swift */; };
+		B5FA11FB2BC3E79A00A26C56 /* CollectionExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FA11FA2BC3E79A00A26C56 /* CollectionExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -55,6 +56,7 @@
 		B5D48FC52BAAD01000FAB590 /* Row.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Row.swift; sourceTree = "<group>"; };
 		B5D48FC72BAAD80100FAB590 /* AddNewPersonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewPersonView.swift; sourceTree = "<group>"; };
 		B5D48FC92BAB73A200FAB590 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
+		B5FA11FA2BC3E79A00A26C56 /* CollectionExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -138,6 +140,7 @@
 				B5D48FBB2BAACCCD00FAB590 /* ContactManager.swift */,
 				B5D48FBD2BAACE6B00FAB590 /* Contact.swift */,
 				B5D48FBF2BAACE9800FAB590 /* StringExtensions.swift */,
+				B5FA11FA2BC3E79A00A26C56 /* CollectionExtension.swift */,
 				B5D48FC92BAB73A200FAB590 /* Router.swift */,
 			);
 			path = Helpers;
@@ -231,6 +234,7 @@
 				B5D48FC42BAAD00000FAB590 /* MultiSelectionRow.swift in Sources */,
 				B5D48FB42BAAC8C200FAB590 /* AddEditExpenseView.swift in Sources */,
 				B502A7BE2BAA29A500FCA90F /* Event.swift in Sources */,
+				B5FA11FB2BC3E79A00A26C56 /* CollectionExtension.swift in Sources */,
 				B5D48FBE2BAACE6B00FAB590 /* Contact.swift in Sources */,
 				B502A7C42BAA32CC00FCA90F /* ExpenseMember.swift in Sources */,
 				B502A7BC2BAA28F400FCA90F /* Person.swift in Sources */,

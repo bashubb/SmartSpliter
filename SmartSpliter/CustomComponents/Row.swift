@@ -20,7 +20,7 @@ struct Row: View {
             
             VStack(alignment: .leading) {
                 ForEach(contact.phoneNumbers.components(separatedBy: ","), id:\.self){
-                    Text($0.trimmingCharacters(in: .whitespacesAndNewlines))
+                    Text($0.trimmed())
                 }
             }
             .padding(.bottom, -10)

@@ -45,11 +45,22 @@ struct ImportPersonView: View {
         .task {
             contacts = await ContactManager.fetchAllContacts()
         }
+        .onChange(of: selectedItems) { 
+            selectedItems.removeAll()
+            Task {
+                await findChoosenContacts()
+            }
+            
+        }
         
     }
     
-    func fetchContact() {
-        selectedItems.
+    func findChoosenContacts() async {
+        for contact in contacts {
+            if selectedItems.contains(contact.id) && !fetchContacts.contains(where: { $0.id == contact.id }) {
+                fetchContacts.append(contact)
+            }
+        }
     }
 }
 
