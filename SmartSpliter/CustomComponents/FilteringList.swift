@@ -28,7 +28,7 @@ struct FilteringList<T: Identifiable, Content: View>: View {
             List(filteredItems, rowContent: content)
                 .listStyle(.plain)
                 .onAppear(perform: applyFilter)
-                .onChange(of: filterString) { _ in
+                .onChange(of: filterString) { 
                     withAnimation {
                         applyFilter()
                     }

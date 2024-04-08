@@ -46,7 +46,7 @@ struct AddMemberView: View {
             
             // screen for importing from contacts
             // fetch in contact format and convert to person and save as EventMembers
-            ImportPersonView(fetchContacts: $fetchedContacts)
+            ImportPersonView(fetchedContacts: $fetchedContacts)
         }
        .padding(.top, 20)
        .sheet(isPresented: $showAddingView) {

@@ -12,7 +12,7 @@ struct ImportPersonView: View {
     @State private var contacts = [Contact]()
     @State private var selectedItems = Set<UUID>()
     
-    @Binding var fetchContacts: [Contact]
+    @Binding var fetchedContacts: [Contact]
     
     var selectedCounted: String {
         "\(selectedItems.count) items"
@@ -32,7 +32,7 @@ struct ImportPersonView: View {
                 .navigationTitle(selectedCounted)
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
-                    if !selectedItems.isEmpty {
+                    if selectedItems.isNotEmpty {
                         Button("clear"){
                             selectedItems.removeAll()
                         }
@@ -45,8 +45,7 @@ struct ImportPersonView: View {
         .task {
             contacts = await ContactManager.fetchAllContacts()
         }
-        .onChange(of: selectedItems) { 
-            selectedItems.removeAll()
+        .onChange(of: selectedItems) {
             Task {
                 await findChoosenContacts()
             }
@@ -56,9 +55,10 @@ struct ImportPersonView: View {
     }
     
     func findChoosenContacts() async {
+        fetchedContacts.removeAll()
         for contact in contacts {
-            if selectedItems.contains(contact.id) && !fetchContacts.contains(where: { $0.id == contact.id }) {
-                fetchContacts.append(contact)
+            if selectedItems.contains(contact.id) && !fetchedContacts.contains(where: { $0.id == contact.id }) {
+                fetchedContacts.append(contact)
             }
         }
     }
