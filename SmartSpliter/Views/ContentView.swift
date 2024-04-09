@@ -25,10 +25,12 @@ struct ContentView: View {
                     } label: {
                         ContentUnavailableView{
                             Label("No events", systemImage: "plus.square.dashed")
+                                .foregroundColor(.blue)
                         } description: {
                             Text("For now, you have no events, tap to add some")
                         }
                     }
+                    .buttonStyle(.plain)
                 } else {
                     List{
                         Section("Events") {
@@ -66,6 +68,7 @@ struct ContentView: View {
                 }
             }
         }
+        .listStyle(.grouped)
     }
     
     func addEvent() {

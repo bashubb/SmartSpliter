@@ -27,25 +27,30 @@ struct AddEditEventView: View {
    
     
     var body: some View {
-        List {
+        VStack(spacing: 0) {
             // Summary of this event
-            Section {
-                TextField("Name", text: $event.eventName) { isEditing in
-                    self.isEditing = isEditing
-                }
-                .padding(10)
-                .overlay(RoundedRectangle(cornerRadius: 10).stroke(isEditing ? Color.green : Color.gray, lineWidth: 2))
-                .focused($isFoucused)
-                
-                DatePicker("Date", selection: $event.eventDate, displayedComponents: .date)
-                    .labelsHidden()
-                    
-            } header: {
-                HStack {
-                    Text("Event Details")
-                    Spacer()
+            List {
+                Section("Event Details") {
+                    VStack {
+                        HStack {
+                            Text("Event Name:")
+                                .font(.footnote)
+                            
+                            TextField("Name", text: $event.eventName) { isEditing in
+                                self.isEditing = isEditing
+                            }
+                            .padding(10)
+                            .overlay(RoundedRectangle(cornerRadius: 10).stroke(isEditing ? Color.green : Color.gray, lineWidth: isFoucused ? 2 : 1))
+                            .focused($isFoucused)
+                          
+                        }
+                        DatePicker("Event Date:" ,selection: $event.eventDate, displayedComponents: .date)
+                            .font(.footnote)
+                    }
                 }
             }
+            .scrollDisabled(true)
+            
             
             if event.eventMembers.isEmpty {
                 Button {
@@ -53,38 +58,44 @@ struct AddEditEventView: View {
                 } label: {
                     ContentUnavailableView{
                         Label("No members", systemImage: "plus")
+                            .foregroundStyle(.blue)
                     } description: {
                         Text("For now, you have no members in your event, tap to add some")
                     }
                 }
+                .buttonStyle(.plain)
+                
             } else {
-                Section {
-                    // List of members - total amounts for person - delete posibility
-                    ForEach(event.eventMembers) { eventMember in
-                        NavigationLink(value: eventMember) {
-                            VStack(alignment:.leading) {
-                                HStack {
-                                    Text(eventMember.person.firstName)
-                                    Text(eventMember.person.lastName)
+                List {
+                    Section {
+                        // List of members - total amounts for person - delete posibility
+                        ForEach(event.eventMembers) { eventMember in
+                            NavigationLink(value: eventMember) {
+                                VStack(alignment:.leading) {
+                                    HStack {
+                                        Text(eventMember.person.firstName)
+                                        Text(eventMember.person.lastName)
+                                    }
+                                    .font(.headline)
+                                    
+                                    Group {
+                                        Text(eventMember.person.phoneNumber)
+                                        Text(eventMember.wallet.formatted())
+                                    }
+                                    .font(.caption)
                                 }
-                                .font(.headline)
-                                
-                                Group {
-                                    Text(eventMember.person.phoneNumber)
-                                    Text(eventMember.wallet.formatted())
-                                }
-                                .font(.caption)
+                                .buttonStyle(.plain)
                             }
                         }
-                    }
-                    .onDelete(perform: deleteEventMember)
-                } header: {
-                    HStack {
-                        Text("Event Members")
-                        // Add some people from contacts or create
-                        Spacer()
-                        Button("Add some members", action: addMembers)
-                            .buttonStyle(.bordered)
+                        .onDelete(perform: deleteEventMember)
+                    } header: {
+                        HStack {
+                            Text("Event Members")
+                            // Add some people from contacts or create
+                            Spacer()
+                            Button("Add some members", action: addMembers)
+                                .buttonStyle(.bordered)
+                        }
                     }
                 }
             }
@@ -96,34 +107,38 @@ struct AddEditEventView: View {
                 } label: {
                     ContentUnavailableView{
                         Label("No expenses", systemImage: "plus")
+                            .foregroundStyle(.blue)
                     } description: {
                         Text("For now, you have no expenses in your event, tap to add some")
                     }
                 }
+                .buttonStyle(.plain)
             } else {
-                Section {
-                    // List of expenses - delete possibility - expense detailView(choose who from members is contributing in this expense - list of members - removable, how to split?(equaly, fixed amount, summary? )
-                    ForEach(event.expenses) { expense in
-                        NavigationLink(value: expense) {
-                            VStack {
-                                Text(expense.expenseName)
-                                Text("\(expense.amount.formatted())")
+                List {
+                    Section {
+                        // List of expenses - delete possibility - expense detailView(choose who from members is contributing in this expense - list of members - removable, how to split?(equaly, fixed amount, summary? )
+                        ForEach(event.expenses) { expense in
+                            NavigationLink(value: expense) {
+                                VStack {
+                                    Text(expense.expenseName)
+                                    Text("\(expense.amount.formatted())")
+                                }
                             }
                         }
-                    }
-                } header: {
-                    HStack {
-                        Text("Expenses")
-                        // Add some people from contacts or create
-                        Spacer()
-                        Button("Add some expense", action: addExpense)
-                            .buttonStyle(.bordered)
-                        
+                    } header: {
+                        HStack {
+                            Text("Expenses")
+                            // Add some people from contacts or create
+                            Spacer()
+                            Button("Add some expense", action: addExpense)
+                                .buttonStyle(.bordered)
+                            
+                        }
                     }
                 }
             }
         }
-        .listStyle(.grouped)
+        .ignoresSafeArea(.keyboard)
         .navigationTitle("EditEvent")
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(backButtonHidden)
@@ -137,7 +152,9 @@ struct AddEditEventView: View {
                 }
             }
         }
-        .onTapGesture{ isFoucused = false }
+        .onTapGesture(count: 2){
+            isFoucused = false
+        }
     }
     
     
@@ -179,6 +196,7 @@ struct AddEditEventView: View {
             AddEditEventView(event: event)
                 .modelContainer(container)
         }
+        .listStyle(.grouped)
     } catch {
         return Text("Failed to create container: \(error.localizedDescription)")
     }
