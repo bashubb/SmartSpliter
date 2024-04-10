@@ -15,9 +15,10 @@ class EventMember: Hashable {
     var person: Person
     var event: Event
     
-    init(eventAmount: Double = 0, person: Person = Person(), event: Event ) {
-        self.wallet = eventAmount
+    init(wallet: Double = 0, person: Person = Person(), event: Event ) {
+        self.wallet = wallet
         self.person = person
         self.event = event
     }
+ 
 }

@@ -23,4 +23,8 @@ class Person {
         self.phoneNumber = phoneNumber
         self.eventMembers = eventMembers
     }
+    
+    #if DEBUG
+    static let example = Person(firstName: "John", lastName: "Smith")
+    #endif
 }

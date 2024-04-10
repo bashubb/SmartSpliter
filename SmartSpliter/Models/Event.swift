@@ -22,4 +22,5 @@ class Event {
         self.eventMembers = eventMembers
         self.eventDate = eventDate
     }
+    
 }
