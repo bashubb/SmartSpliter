@@ -50,88 +50,86 @@ struct AddEditEventView: View {
                     .fontWeight(.semibold)
             }
             .padding()
-            .background(.bar, in: RoundedRectangle(cornerRadius: 10))
-            .padding(.horizontal)
-                
-            GeometryReader { geo in
-                List {
-                    if event.eventMembers.isEmpty {
-                        Button {
-                            addMembers()
-                        } label: {
-                            ContentUnavailableView{
-                                Label("No members", systemImage: "plus")
-                                    .foregroundStyle(.blue)
-                            } description: {
-                                Text("For now, you have no members in your event, tap to add some")
-                            }
-                        }
-                        .padding(.vertical, 30)
-                        .buttonStyle(.plain)
-                    } else {
-                        Section {
-                            
-                            ScrollView(.horizontal, showsIndicators: false) {
-                                HStack {
-                                    ForEach(event.eventMembers) { eventMember in
-                                        NavigationLink(value: eventMember) {
-                                            ExtractedView(eventMember: eventMember)
-                                            
-                                        }
-                                    }
-                                }
-                                .scrollTargetLayout()
-                            }
-                            .scrollTargetBehavior(.viewAligned)
-                            .contentMargins(20, for: .scrollContent)
-                            .listRowInsets(EdgeInsets())
-                        } header: {
-                            HStack {
-                                Text("Event Members")
-                                // Add some people from contacts or create
-                                Spacer()
-                                Button("Add some members", action: addMembers)
-                                    .buttonStyle(.bordered)
-                            }
+            .background(.bar)
+            
+            List {
+                if event.eventMembers.isEmpty {
+                    Button {
+                        addMembers()
+                    } label: {
+                        ContentUnavailableView{
+                            Label("No members", systemImage: "plus")
+                                .foregroundStyle(.blue)
+                        } description: {
+                            Text("For now, you have no members in your event, tap to add some")
                         }
                     }
-                    if event.expenses.isEmpty {
-                        Button {
-                            addExpense()
-                        } label: {
-                            ContentUnavailableView{
-                                Label("No expenses", systemImage: "plus")
-                                    .foregroundStyle(.blue)
-                            } description: {
-                                Text("For now, you have no expenses in your event, tap to add some")
+                    .padding(.vertical, 30)
+                    .buttonStyle(.plain)
+                } else {
+                    Section {
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            HStack {
+                                ForEach(event.eventMembers) { eventMember in
+                                    EventMemberCardView(eventMember: eventMember)
+                                }
+                            }
+                            .scrollTargetLayout()
+                        }
+                        .scrollTargetBehavior(.viewAligned)
+                        .contentMargins(20, for: .scrollContent)
+                        .listRowInsets(EdgeInsets())
+                    } header: {
+                        HStack {
+                            Text("Event Members")
+                                .font(.headline.bold())
+                                .textCase(.uppercase)
+                            // Add some people from contacts or create
+                            Spacer()
+                            Button("Add some members", action: addMembers)
+                                .buttonStyle(.bordered)
+                        }
+                    }
+                    .listRowSeparator(.hidden)
+                }
+                if event.expenses.isEmpty {
+                    Button {
+                        addExpense()
+                    } label: {
+                        ContentUnavailableView{
+                            Label("No expenses", systemImage: "plus")
+                                .foregroundStyle(.blue)
+                        } description: {
+                            Text("For now, you have no expenses in your event, tap to add some")
+                        }
+                    }
+                    .buttonStyle(.plain)
+                } else {
+                    Section {
+                        // List of expenses - delete possibility - expense detailView(choose who from members is contributing in this expense - list of members - removable, how to split?(equaly, fixed amount, summary? )
+                        ForEach(event.expenses) { expense in
+                            NavigationLink(value: expense) {
+                                VStack {
+                                    Text(expense.expenseName)
+                                    Text("\(expense.amount.formatted())")
+                                }
                             }
                         }
-                        .buttonStyle(.plain)
-                    } else {
-                            Section {
-                                // List of expenses - delete possibility - expense detailView(choose who from members is contributing in this expense - list of members - removable, how to split?(equaly, fixed amount, summary? )
-                                ForEach(event.expenses) { expense in
-                                    NavigationLink(value: expense) {
-                                        VStack {
-                                            Text(expense.expenseName)
-                                            Text("\(expense.amount.formatted())")
-                                        }
-                                    }
-                                }
-                            } header: {
-                                HStack {
-                                    Text("Expenses")
-                                    // Add some people from contacts or create
-                                    Spacer()
-                                    Button("Add some expense", action: addExpense)
-                                        .buttonStyle(.bordered)
-                                    
-                                }
-                            }
+                    } header: {
+                        HStack {
+                            Text("Expenses")
+                                .font(.headline.bold())
+                                .textCase(.uppercase)
+                            // Add some people from contacts or create
+                            Spacer()
+                            Button("Add some expense", action: addExpense)
+                                .buttonStyle(.bordered)
+                            
+                        }
                     }
                 }
-                .listStyle(.plain)
             }
+            .listStyle(.plain)
         }
         .ignoresSafeArea(.keyboard)
         .navigationTitle("Event Details")
@@ -197,22 +195,57 @@ struct AddEditEventView: View {
     }
 }
 
-struct ExtractedView: View {
+struct EventMemberCardView: View {
     var eventMember: EventMember
     
     var body: some View {
-        VStack(alignment:.leading) {
+        VStack(alignment: .leading) {
             HStack {
-                Text(eventMember.person.firstName)
-                Text(eventMember.person.lastName)
+                VStack(alignment: .leading) {
+                    Group {
+                        Text(eventMember.person.firstName) +
+                        Text(eventMember.person.lastName)
+                    }
+                    .font(.headline)
+                    
+                    Group {
+                        Text(eventMember.person.phoneNumber)
+                        Text(eventMember.wallet.formatted())
+                    }
+                    .font(.caption)
+                }
+                
+                Spacer()
+                
+                VStack {
+                    NavigationLink(value: eventMember) {
+                        Image(systemName: "pencil")
+                            .font(.title)
+                    }
+                    .buttonStyle(.bordered)
+                    .tint(.yellow)
+                    
+                    Button{
+                        
+                    } label: {
+                        Image(systemName: "trash")
+                            .font(.title)
+                            
+                    }
+                    .buttonStyle(.bordered)
+                    .tint(.red.opacity(0.3))
+                    
+                }
             }
-            .font(.headline)
-            
-            Group {
-                Text(eventMember.person.phoneNumber)
-                Text(eventMember.wallet.formatted())
-            }
-            .font(.caption)
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding()
+        .containerRelativeFrame(.horizontal)
+        .background(.bar)
+        .clipShape(RoundedRectangle(cornerRadius: 10))
+        .shadow(radius: 2)
+        .padding(4)
+        
+        
     }
 }
