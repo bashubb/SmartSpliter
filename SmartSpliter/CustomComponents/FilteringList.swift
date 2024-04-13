@@ -20,10 +20,31 @@ struct FilteringList<T: Identifiable, Content: View>: View {
     
     var body: some View {
         VStack {
-            TextField("Type to filter", text: $filterString)
-                .textFieldStyle(.roundedBorder)
-                .padding(.horizontal)
-                .focused($isTextFieldFocused)
+            HStack {
+                TextField("Type to filter", text: $filterString)
+                    .padding(10)
+                    .background(.white)
+                    .focused($isTextFieldFocused)
+                    .overlay(RoundedRectangle(cornerRadius: 10).stroke(isTextFieldFocused ? Color.green : Color.gray, lineWidth: isTextFieldFocused ? 2 : 1))
+                    .padding()
+                    
+                
+                if  filterString.isNotEmpty {
+                    Button {
+                        filterString = ""
+                    } label: {
+                        Image(systemName: "xmark.circle")
+                            .font(.largeTitle)
+                            .foregroundStyle(.gray.opacity(0.4))
+                            .padding(.trailing)
+                            .transition(.slide)
+                            
+                    }
+                }
+            }
+            .animation(.spring, value: filterString)
+            
+            
             
             List(filteredItems, rowContent: content)
                 .listStyle(.plain)
@@ -36,7 +57,6 @@ struct FilteringList<T: Identifiable, Content: View>: View {
                 .onTapGesture {
                     isTextFieldFocused = false
                 }
-                
         }
         
     }

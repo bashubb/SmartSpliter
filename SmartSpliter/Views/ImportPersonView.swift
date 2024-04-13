@@ -27,9 +27,6 @@ struct ImportPersonView: View {
                                        Color.gray.opacity(0.3) : .clear)
                 }
                 .padding(.top)
-                .toolbarBackground(.visible, for: .navigationBar)
-                .toolbarBackground(.ultraThinMaterial, for: .navigationBar)
-                .navigationTitle(selectedCounted)
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     if selectedItems.isNotEmpty {

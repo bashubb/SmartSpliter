@@ -62,12 +62,14 @@ struct AddMemberView: View {
                         .clipShape(.rect(cornerRadius: 10))
                 }
             }
+            .padding(.top, 20)
             .padding(.horizontal)
+            
             // screen for importing from contacts
             // fetch in contact format and convert to person and save as EventMembers
             ImportPersonView(fetchedContacts: $fetchedContacts)
         }
-        .padding(.top, 20)
+        .background(.bar)
         .sheet(isPresented: $showAddingView) {
             AddNewPersonView(eventId: eventId)
         }

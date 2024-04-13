@@ -15,7 +15,6 @@ struct AddEditEventView: View {
     
     @Bindable var event: Event
     
-    @State private var isEditing = false
     @FocusState var isFoucused
     
     var backButtonHidden: Bool {
@@ -36,13 +35,11 @@ struct AddEditEventView: View {
                         .font(.footnote)
                         .fontWeight(.semibold)
                     
-                    TextField("Name", text: $event.eventName) { isEditing in
-                        self.isEditing = isEditing
-                    }
-                    .padding(10)
-                    .background(.white)
-                    .overlay(RoundedRectangle(cornerRadius: 10).stroke(isEditing ? Color.green : Color.gray, lineWidth: isFoucused ? 2 : 1))
-                    .focused($isFoucused)
+                    TextField("Name", text: $event.eventName)
+                        .padding(10)
+                        .background(.white)
+                        .overlay(RoundedRectangle(cornerRadius: 10).stroke(isFoucused ? Color.green : Color.gray, lineWidth: isFoucused ? 2 : 1))
+                        .focused($isFoucused)
                     
                 }
                 DatePicker("Event Date:" ,selection: $event.eventDate, displayedComponents: .date)
@@ -53,21 +50,21 @@ struct AddEditEventView: View {
             .background(.bar)
             
             List {
-                if event.eventMembers.isEmpty {
-                    Button {
-                        addMembers()
-                    } label: {
-                        ContentUnavailableView{
-                            Label("No members", systemImage: "plus")
-                                .foregroundStyle(.blue)
-                        } description: {
-                            Text("For now, you have no members in your event, tap to add some")
+                Section {
+                    if event.eventMembers.isEmpty {
+                        Button {
+                            addMembers()
+                        } label: {
+                            ContentUnavailableView{
+                                Label("No members", systemImage: "plus")
+                                    .foregroundStyle(.blue)
+                            } description: {
+                                Text("For now, you have no members in your event, tap to add some")
+                            }
                         }
-                    }
-                    .padding(.vertical, 30)
-                    .buttonStyle(.plain)
-                } else {
-                    Section {
+                        .padding(.vertical, 30)
+                        .buttonStyle(.plain)
+                    } else {
                         ForEach(event.eventMembers) { eventMember in
                             HStack{
                                 Text(eventMember.person.firstName)
@@ -84,35 +81,47 @@ struct AddEditEventView: View {
                             
                         }
                         .onDelete(perform: deleteEventMember)
-                        .listRowInsets(EdgeInsets())
-                    } header: {
-                        HStack {
-                            Text("Event Members")
-                                .font(.headline.bold())
-                                .textCase(.uppercase)
-                            // Add some people from contacts or create
-                            Spacer()
-                            Button("Add some members", action: addMembers)
-                                .buttonStyle(.bordered)
+                    }
+                    
+                } header: {
+                    HStack {
+                        Text("Event Members")
+                            .font(.headline.bold())
+                            .textCase(.uppercase)
+                            .padding(6)
+                            .background(.bar, in: .rect(cornerRadius: 8))
+                        // Add some people from contacts or create
+                        Spacer()
+                        if event.eventMembers.isNotEmpty {
+                            Button{
+                                addMembers()
+                            } label: {
+                                HStack{
+                                    Image(systemName:"plus")
+                                    Image(systemName: "person.fill")
+                                }
+                            }
+                            .buttonStyle(.bordered)
                         }
                     }
-                    .listRowSeparator(.hidden)
                 }
-                if event.expenses.isEmpty {
-                    Button {
-                        addExpense()
-                    } label: {
-                        ContentUnavailableView{
-                            Label("No expenses", systemImage: "plus")
-                                .foregroundStyle(.blue)
-                        } description: {
-                            Text("For now, you have no expenses in your event, tap to add some")
+                
+                
+                Section {
+                    // List of expenses - delete possibility - expense detailView(choose who from members is contributing in this expense - list of members - removable, how to split?(equaly, fixed amount, summary? )
+                    if event.expenses.isEmpty {
+                        Button {
+                            addExpense()
+                        } label: {
+                            ContentUnavailableView{
+                                Label("No expenses", systemImage: "plus")
+                                    .foregroundStyle(.blue)
+                            } description: {
+                                Text("For now, you have no expenses in your event, tap to add some")
+                            }
                         }
-                    }
-                    .buttonStyle(.plain)
-                } else {
-                    Section {
-                        // List of expenses - delete possibility - expense detailView(choose who from members is contributing in this expense - list of members - removable, how to split?(equaly, fixed amount, summary? )
+                        .buttonStyle(.plain)
+                    } else {
                         ForEach(event.expenses) { expense in
                             NavigationLink(value: expense) {
                                 VStack {
@@ -122,19 +131,30 @@ struct AddEditEventView: View {
                             }
                         }
                         .onDelete(perform: deleteExpense)
-                    } header: {
-                        HStack {
-                            Text("Expenses")
-                                .font(.headline.bold())
-                                .textCase(.uppercase)
-                            // Add some people from contacts or create
-                            Spacer()
-                            Button("Add some expense", action: addExpense)
-                                .buttonStyle(.bordered)
-                            
+                    }
+                } header: {
+                    HStack {
+                        Text("Expenses")
+                            .font(.headline.bold())
+                            .textCase(.uppercase)
+                            .padding(6)
+                            .background(.bar, in: .rect(cornerRadius: 8))
+                        // Add some people from contacts or create
+                        Spacer()
+                        if event.expenses.isNotEmpty {
+                            Button{
+                                addExpense()
+                            } label: {
+                                HStack {
+                                    Image(systemName: "plus")
+                                    Image(systemName: "dollarsign.circle")
+                                }
+                            }
+                            .buttonStyle(.bordered)
                         }
                     }
                 }
+                
             }
             .listStyle(.plain)
         }
