@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-class EventMember: Hashable {
+class EventMember: Equatable, Hashable {
     var id = UUID()
     var wallet: Double
     var person: Person
@@ -19,6 +19,10 @@ class EventMember: Hashable {
         self.wallet = wallet
         self.person = person
         self.event = event
+    }
+    
+    static func ==(lhs: EventMember, rhs: EventMember) -> Bool {
+        lhs.id == rhs.id
     }
  
 }

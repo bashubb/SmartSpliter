@@ -30,6 +30,7 @@ class ContactManager {
                 guard contact.phoneNumbers.isEmpty == false else { return }
                 
                 var fetchedContact = Contact(
+                    id: contact.id,
                     firstName: contact.givenName.trimmed(),
                     lastName: contact.familyName.trimmed(),
                     phoneNumbers: "")

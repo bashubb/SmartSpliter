@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-class Event {
+class Event: Equatable {
     var id = UUID()
     var eventName: String
     var expenses: [Expense]
@@ -23,4 +23,7 @@ class Event {
         self.eventDate = eventDate
     }
     
+    static func ==(lhs: Event, rhs: Event) -> Bool {
+        lhs.id == rhs.id
+    }
 }

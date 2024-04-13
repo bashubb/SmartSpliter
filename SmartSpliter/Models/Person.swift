@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-class Person {
+class Person: Equatable {
     var id = UUID()
     var firstName: String
     var lastName: String
@@ -23,6 +23,11 @@ class Person {
         self.phoneNumber = phoneNumber
         self.eventMembers = eventMembers
     }
+    
+    static func ==(lhs: Person, rhs: Person) -> Bool {
+        lhs.id == rhs.id
+    }
+    
     
     #if DEBUG
     static let example = Person(firstName: "John", lastName: "Smith")

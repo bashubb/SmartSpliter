@@ -68,16 +68,22 @@ struct AddEditEventView: View {
                     .buttonStyle(.plain)
                 } else {
                     Section {
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            HStack {
-                                ForEach(event.eventMembers) { eventMember in
-                                    EventMemberCardView(eventMember: eventMember)
-                                }
+                        ForEach(event.eventMembers) { eventMember in
+                            HStack{
+                                Text(eventMember.person.firstName)
+                                Text(eventMember.person.lastName)
                             }
-                            .scrollTargetLayout()
+                            .font(.headline)
+                            .swipeActions(edge: .leading, allowsFullSwipe: true) {
+                                NavigationLink(value: eventMember) {
+                                    Image(systemName: "pencil")
+                                }
+                                .tint(.orange)
+                            }
+                            .padding()
+                            
                         }
-                        .scrollTargetBehavior(.viewAligned)
-                        .contentMargins(20, for: .scrollContent)
+                        .onDelete(perform: deleteEventMember)
                         .listRowInsets(EdgeInsets())
                     } header: {
                         HStack {
@@ -115,6 +121,7 @@ struct AddEditEventView: View {
                                 }
                             }
                         }
+                        .onDelete(perform: deleteExpense)
                     } header: {
                         HStack {
                             Text("Expenses")
@@ -195,57 +202,56 @@ struct AddEditEventView: View {
     }
 }
 
-struct EventMemberCardView: View {
-    var eventMember: EventMember
-    
-    var body: some View {
-        VStack(alignment: .leading) {
-            HStack {
-                VStack(alignment: .leading) {
-                    Group {
-                        Text(eventMember.person.firstName) +
-                        Text(eventMember.person.lastName)
-                    }
-                    .font(.headline)
-                    
-                    Group {
-                        Text(eventMember.person.phoneNumber)
-                        Text(eventMember.wallet.formatted())
-                    }
-                    .font(.caption)
-                }
-                
-                Spacer()
-                
-                VStack {
-                    NavigationLink(value: eventMember) {
-                        Image(systemName: "pencil")
-                            .font(.title)
-                    }
-                    .buttonStyle(.bordered)
-                    .tint(.yellow)
-                    
-                    Button{
-                        
-                    } label: {
-                        Image(systemName: "trash")
-                            .font(.title)
-                            
-                    }
-                    .buttonStyle(.bordered)
-                    .tint(.red.opacity(0.3))
-                    
-                }
-            }
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding()
-        .containerRelativeFrame(.horizontal)
-        .background(.bar)
-        .clipShape(RoundedRectangle(cornerRadius: 10))
-        .shadow(radius: 2)
-        .padding(4)
-        
-        
-    }
-}
+//struct EventMemberCardView: View {
+//    var eventMember: EventMember
+//
+//    var body: some View {
+//        VStack(alignment: .leading) {
+//            HStack {
+//                VStack(alignment: .leading) {
+//                    Group {
+//                        Text(eventMember.person.firstName) +
+//                        Text(eventMember.person.lastName)
+//                    }
+//                    .font(.headline)
+//
+//                    Group {
+//                        Text(eventMember.person.phoneNumber)
+//                        Text(eventMember.wallet.formatted())
+//                    }
+//                    .font(.caption)
+//                }
+//
+//                Spacer()
+//
+//                VStack {
+//                    NavigationLink(value: eventMember) {
+//                        Image(systemName: "pencil")
+//                            .font(.title)
+//                    }
+//                    .buttonStyle(.bordered)
+//                    .tint(.yellow)
+//
+//                    Button{
+//
+//                    } label: {
+//                        Image(systemName: "trash")
+//                            .font(.title)
+//
+//                    }
+//                    .buttonStyle(.bordered)
+//                    .tint(.red.opacity(0.3))
+//
+//                }
+//            }
+//        }
+//        .frame(maxWidth: .infinity, alignment: .leading)
+//        .padding()
+//        .containerRelativeFrame(.horizontal)
+//        .background(.bar)
+//        .clipShape(RoundedRectangle(cornerRadius: 10))
+//        .shadow(radius: 2)
+//        .padding(4)
+//
+
+
