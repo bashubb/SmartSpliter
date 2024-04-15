@@ -69,6 +69,7 @@ struct ContentView: View {
             }
         }
         .listStyle(.grouped)
+        .fontDesign(.rounded)
     }
     
     func addEvent() {

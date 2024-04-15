@@ -16,6 +16,14 @@ struct AddEditEventView: View {
     @Bindable var event: Event
     
     @FocusState var isFoucused
+    @State private var isChevronSpining = false
+    @State private var isSummaryExpanded = false
+    @State private var showSummaryContent = false
+    @State private var isEditing = false
+    @State private var nameEdit = false
+    
+    @Namespace var namespace
+    
     
     var backButtonHidden: Bool {
         if event.eventName.isReallyEmpty || ( isFoucused && event.eventName.isReallyEmpty) {
@@ -26,137 +34,243 @@ struct AddEditEventView: View {
     
     
     var body: some View {
-        VStack(spacing:0){
-            // Summary of this event
-            
-            VStack {
-                HStack {
-                    Text("Event Name:")
-                        .font(.footnote)
-                        .fontWeight(.semibold)
-                    
-                    TextField("Name", text: $event.eventName)
-                        .padding(10)
-                        .background(.white)
-                        .overlay(RoundedRectangle(cornerRadius: 10).stroke(isFoucused ? Color.green : Color.gray, lineWidth: isFoucused ? 2 : 1))
-                        .focused($isFoucused)
-                    
-                }
-                DatePicker("Event Date:" ,selection: $event.eventDate, displayedComponents: .date)
-                    .font(.footnote)
-                    .fontWeight(.semibold)
-            }
-            .padding()
-            .background(.bar)
-            
-            List {
-                Section {
-                    if event.eventMembers.isEmpty {
-                        Button {
-                            addMembers()
-                        } label: {
-                            ContentUnavailableView{
-                                Label("No members", systemImage: "plus")
-                                    .foregroundStyle(.blue)
-                            } description: {
-                                Text("For now, you have no members in your event, tap to add some")
-                            }
-                        }
-                        .padding(.vertical, 30)
-                        .buttonStyle(.plain)
-                    } else {
-                        ForEach(event.eventMembers) { eventMember in
-                            HStack{
-                                Text(eventMember.person.firstName)
-                                Text(eventMember.person.lastName)
-                            }
-                            .font(.headline)
-                            .swipeActions(edge: .leading, allowsFullSwipe: true) {
-                                NavigationLink(value: eventMember) {
-                                    Image(systemName: "pencil")
+        ZStack {
+            VStack(spacing:0){
+                // Summary of this event
+                
+                VStack(spacing:0) {
+                    VStack(spacing:14) {
+                        VStack(alignment: .leading) {
+                            Text("Event Name:")
+                                .fontWeight(.semibold)
+                                .foregroundStyle(.secondary)
+                            HStack {
+                                TextField("Name", text: $event.eventName)
+                                    .padding(10)
+                                    .font(.title3)
+                                    .focused($isFoucused)
+                                
+                                if  event.eventName.isNotEmpty {
+                                    Button {
+                                        event.eventName = ""
+                                    } label: {
+                                        Image(systemName: "xmark.square")
+                                            .font(.title)
+                                            .foregroundStyle(.gray.opacity(0.4))
+                                    }
+                                    .padding(.trailing, 3)
                                 }
-                                .tint(.orange)
                             }
-                            .padding()
+                            .background(.white)
+                            .overlay(RoundedRectangle(cornerRadius: 10).stroke(isFoucused ? Color.green : Color.gray, lineWidth: isFoucused ? 2 : 1))
+                            .animation(.spring(response: 0.4), value: event.eventName)
+                        }
+                        
+                        Divider()
+                        
+                        VStack(alignment: .leading) {
+                            Text("Event Date:")
+                                .fontWeight(.semibold)
+                                .foregroundStyle(.secondary)
+                            
+                            DatePicker("Event Date:" ,selection: $event.eventDate, displayedComponents: .date)
+                                .labelsHidden()
+                                .background(RoundedRectangle(cornerRadius: 8, style : .continuous).fill(Color.blue).opacity(0.2))
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                    .padding()
+                    .background(RoundedRectangle(cornerRadius: 8).fill(.bar)
+                        .shadow(color: .gray, radius: 0.5))
+                    .padding(.bottom, 10)
+                    
+                    
+                    if isSummaryExpanded {
+                        VStack {
+                            HStack {
+                                Image(systemName: "dollarsign.circle")
+                                    .font(.largeTitle)
+                                    .foregroundStyle(.orange)
+                                Text("Event Summary")
+                                    .fontWeight(.semibold)
+                                Spacer()
+                                Image(systemName: "chevron.down")
+                                    .font(.title)
+                                    .rotationEffect(isChevronSpining ? Angle(degrees: 180) : Angle(degrees: 0))
+                            }
+                            .onTapGesture {
+                                withAnimation {
+                                    isChevronSpining.toggle()
+                                }
+                                withAnimation {
+                                    showSummaryContent.toggle()
+                                } completion: {
+                                    withAnimation {
+                                        isSummaryExpanded.toggle()
+                                    }
+                                }
+                            }
+                            
+                            VStack {
+                                HStack {
+                                    Spacer()
+                                    Button {
+                                        // share summary
+                                    } label: {
+                                        Label("share", systemImage: "square.and.arrow.up")
+                                    }
+                                    .buttonStyle(.bordered)
+                                }
+                                Text("Event Summary here")
+                            }
+                            .opacity(showSummaryContent ? 1 : 0)
+                        }
+                        .padding(7)
+                        .background(RoundedRectangle(cornerRadius: 8).fill(.bar)
+                            .shadow(color: .gray, radius: 0.5)
+                            .matchedGeometryEffect(id: "summary", in: namespace))
+                    } else {
+                        VStack {
+                            HStack {
+                                Image(systemName: "dollarsign.circle")
+                                    .font(.largeTitle)
+                                    .foregroundStyle(.orange)
+                                Text("Event Summary")
+                                    .fontWeight(.semibold)
+                                Spacer()
+                                Image(systemName: "chevron.down")
+                                    .font(.title)
+                                    .rotationEffect(isChevronSpining ? Angle(degrees: 180) : Angle(degrees: 0))
+                            }
+                            .onTapGesture {
+                                withAnimation {
+                                    isSummaryExpanded.toggle()
+                                } completion : {
+                                    withAnimation {
+                                        showSummaryContent.toggle()
+                                    }
+                                    withAnimation {
+                                        isChevronSpining.toggle()
+                                    }
+                                }
+                            }
                             
                         }
-                        .onDelete(perform: deleteEventMember)
+                        .padding(7)
+                        .background(RoundedRectangle(cornerRadius: 8).fill(.bar)
+                            .shadow(color: .gray, radius: 0.5)
+                            .matchedGeometryEffect(id: "summary", in: namespace))
                     }
-                    
-                } header: {
-                    HStack {
-                        Text("Event Members")
-                            .font(.headline.bold())
-                            .textCase(.uppercase)
-                            .padding(6)
-                            .background(.bar, in: .rect(cornerRadius: 8))
-                        // Add some people from contacts or create
-                        Spacer()
-                        if event.eventMembers.isNotEmpty {
-                            Button{
+                }
+                .padding(8)
+                
+                
+                List {
+                    Section {
+                        if event.eventMembers.isEmpty {
+                            Button {
                                 addMembers()
                             } label: {
+                                ContentUnavailableView{
+                                    Label("No members", systemImage: "plus")
+                                        .foregroundStyle(.blue)
+                                } description: {
+                                    Text("For now, you have no members in your event, tap to add some")
+                                }
+                            }
+                            .padding(.vertical, 30)
+                            .buttonStyle(.plain)
+                        } else {
+                            ForEach(event.eventMembers) { eventMember in
                                 HStack{
-                                    Image(systemName:"plus")
-                                    Image(systemName: "person.fill")
+                                    Text(eventMember.person.firstName)
+                                    Text(eventMember.person.lastName)
                                 }
+                                .font(.headline)
+                                .swipeActions(edge: .leading, allowsFullSwipe: true) {
+                                    NavigationLink(value: eventMember) {
+                                        Image(systemName: "pencil")
+                                    }
+                                    .tint(.orange)
+                                }
+                                .padding()
                             }
-                            .buttonStyle(.bordered)
+                            .onDelete(perform: deleteEventMember)
+                        }
+                        
+                    } header: {
+                        HStack {
+                            Text("Event Members")
+                                .font(.headline.bold())
+                                .textCase(.uppercase)
+                            // Add some people from contacts or create
+                            Spacer()
+                            if event.eventMembers.isNotEmpty {
+                                Button{
+                                    addMembers()
+                                } label: {
+                                    HStack{
+                                        Image(systemName:"plus")
+                                        Image(systemName: "person.fill")
+                                    }
+                                }
+                                .buttonStyle(.bordered)
+                            }
                         }
                     }
-                }
-                
-                
-                Section {
-                    // List of expenses - delete possibility - expense detailView(choose who from members is contributing in this expense - list of members - removable, how to split?(equaly, fixed amount, summary? )
-                    if event.expenses.isEmpty {
-                        Button {
-                            addExpense()
-                        } label: {
-                            ContentUnavailableView{
-                                Label("No expenses", systemImage: "plus")
-                                    .foregroundStyle(.blue)
-                            } description: {
-                                Text("For now, you have no expenses in your event, tap to add some")
-                            }
-                        }
-                        .buttonStyle(.plain)
-                    } else {
-                        ForEach(event.expenses) { expense in
-                            NavigationLink(value: expense) {
-                                VStack {
-                                    Text(expense.expenseName)
-                                    Text("\(expense.amount.formatted())")
-                                }
-                            }
-                        }
-                        .onDelete(perform: deleteExpense)
-                    }
-                } header: {
-                    HStack {
-                        Text("Expenses")
-                            .font(.headline.bold())
-                            .textCase(.uppercase)
-                            .padding(6)
-                            .background(.bar, in: .rect(cornerRadius: 8))
-                        // Add some people from contacts or create
-                        Spacer()
-                        if event.expenses.isNotEmpty {
-                            Button{
+                    
+                    Section {
+                        // List of expenses - delete possibility - expense detailView(choose who from members is contributing in this expense - list of members - removable, how to split?(equaly, fixed amount, summary? )
+                        if event.expenses.isEmpty {
+                            Button {
                                 addExpense()
                             } label: {
-                                HStack {
-                                    Image(systemName: "plus")
-                                    Image(systemName: "dollarsign.circle")
+                                ContentUnavailableView{
+                                    Label("No expenses", systemImage: "plus")
+                                        .foregroundStyle(.blue)
+                                } description: {
+                                    Text("For now, you have no expenses in your event, tap to add some")
                                 }
                             }
-                            .buttonStyle(.bordered)
+                            .buttonStyle(.plain)
+                        } else {
+                            ForEach(event.expenses) { expense in
+                                NavigationLink(value: expense) {
+                                    VStack {
+                                        Text(expense.expenseName)
+                                        Text("\(expense.amount.formatted())")
+                                    }
+                                }
+                            }
+                            .onDelete(perform: deleteExpense)
+                        }
+                    } header: {
+                        HStack {
+                            Text("Expenses")
+                                .font(.headline.bold())
+                                .textCase(.uppercase)
+                            // Add some people from contacts or create
+                            Spacer()
+                            if event.expenses.isNotEmpty {
+                                Button{
+                                    addExpense()
+                                } label: {
+                                    HStack {
+                                        Image(systemName: "plus")
+                                        Image(systemName: "dollarsign.circle")
+                                    }
+                                }
+                                .buttonStyle(.bordered)
+                            }
                         }
                     }
+                    
                 }
-                
+                .scrollIndicators(.hidden)
+                .background(Rectangle().stroke(.bar)
+                    .shadow(color: .gray, radius: 0.5))
+                .padding(.top, 10)
             }
-            .listStyle(.plain)
         }
         .ignoresSafeArea(.keyboard)
         .navigationTitle("Event Details")
@@ -216,7 +330,7 @@ struct AddEditEventView: View {
             AddEditEventView(event: example)
                 .modelContainer(container)
         }
-        .listStyle(.grouped)
+        .listStyle(.plain)
     } catch {
         return Text("Failed to create container: \(error.localizedDescription)")
     }
@@ -275,3 +389,8 @@ struct AddEditEventView: View {
 //
 
 
+
+
+//if event.eventName.isEmpty {
+
+//}
