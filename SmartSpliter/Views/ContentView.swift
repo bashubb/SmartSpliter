@@ -12,7 +12,6 @@ import SwiftUI
 struct ContentView: View {
     @EnvironmentObject var router: Router
     @Environment(\.modelContext) var modelContext
-    
     @Query var events: [Event]
     
     
@@ -68,7 +67,6 @@ struct ContentView: View {
                 }
             }
         }
-        .listStyle(.grouped)
         .fontDesign(.rounded)
     }
     

@@ -17,6 +17,8 @@
 		B502A7C22BAA32B700FCA90F /* EventMember.swift in Sources */ = {isa = PBXBuildFile; fileRef = B502A7C12BAA32B700FCA90F /* EventMember.swift */; };
 		B502A7C42BAA32CC00FCA90F /* ExpenseMember.swift in Sources */ = {isa = PBXBuildFile; fileRef = B502A7C32BAA32CC00FCA90F /* ExpenseMember.swift */; };
 		B502A7C72BAA3A7700FCA90F /* AddEditEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B502A7C62BAA3A7700FCA90F /* AddEditEventView.swift */; };
+		B519E1A42BCDDB0A00A2C786 /* AddNewPersonView-ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B519E1A32BCDDB0A00A2C786 /* AddNewPersonView-ViewModel.swift */; };
+		B519E1A62BCE767300A2C786 /* AddMemberView-ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B519E1A52BCE767300A2C786 /* AddMemberView-ViewModel.swift */; };
 		B5D48FB02BAAC85B00FAB590 /* EditMemberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D48FAF2BAAC85B00FAB590 /* EditMemberView.swift */; };
 		B5D48FB22BAAC86B00FAB590 /* AddMemberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D48FB12BAAC86B00FAB590 /* AddMemberView.swift */; };
 		B5D48FB42BAAC8C200FAB590 /* AddEditExpenseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D48FB32BAAC8C200FAB590 /* AddEditExpenseView.swift */; };
@@ -44,6 +46,8 @@
 		B502A7C12BAA32B700FCA90F /* EventMember.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventMember.swift; sourceTree = "<group>"; };
 		B502A7C32BAA32CC00FCA90F /* ExpenseMember.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseMember.swift; sourceTree = "<group>"; };
 		B502A7C62BAA3A7700FCA90F /* AddEditEventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEditEventView.swift; sourceTree = "<group>"; };
+		B519E1A32BCDDB0A00A2C786 /* AddNewPersonView-ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AddNewPersonView-ViewModel.swift"; sourceTree = "<group>"; };
+		B519E1A52BCE767300A2C786 /* AddMemberView-ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AddMemberView-ViewModel.swift"; sourceTree = "<group>"; };
 		B5D48FAF2BAAC85B00FAB590 /* EditMemberView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMemberView.swift; sourceTree = "<group>"; };
 		B5D48FB12BAAC86B00FAB590 /* AddMemberView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMemberView.swift; sourceTree = "<group>"; };
 		B5D48FB32BAAC8C200FAB590 /* AddEditExpenseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEditExpenseView.swift; sourceTree = "<group>"; };
@@ -92,6 +96,7 @@
 				B502A7AC2BAA28C700FCA90F /* SmartSpliterApp.swift */,
 				B502A7BA2BAA28DA00FCA90F /* Models */,
 				B502A7C52BAA3A4300FCA90F /* Views */,
+				B519E1A22BCDDADF00A2C786 /* ViewModels */,
 				B5D48FBA2BAACCB000FAB590 /* CustomComponents */,
 				B5D48FB92BAACCA700FAB590 /* Helpers */,
 				B502A7B02BAA28C900FCA90F /* Assets.xcassets */,
@@ -132,6 +137,15 @@
 				B5D48FAF2BAAC85B00FAB590 /* EditMemberView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		B519E1A22BCDDADF00A2C786 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				B519E1A32BCDDB0A00A2C786 /* AddNewPersonView-ViewModel.swift */,
+				B519E1A52BCE767300A2C786 /* AddMemberView-ViewModel.swift */,
+			);
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		B5D48FB92BAACCA700FAB590 /* Helpers */ = {
@@ -229,6 +243,7 @@
 				B5D48FBC2BAACCCD00FAB590 /* ContactManager.swift in Sources */,
 				B502A7C22BAA32B700FCA90F /* EventMember.swift in Sources */,
 				B5D48FC82BAAD80100FAB590 /* AddNewPersonView.swift in Sources */,
+				B519E1A62BCE767300A2C786 /* AddMemberView-ViewModel.swift in Sources */,
 				B5D48FB02BAAC85B00FAB590 /* EditMemberView.swift in Sources */,
 				B5D48FB82BAAC9B800FAB590 /* ImportPersonView.swift in Sources */,
 				B5D48FC42BAAD00000FAB590 /* MultiSelectionRow.swift in Sources */,
@@ -242,6 +257,7 @@
 				B5D48FCA2BAB73A200FAB590 /* Router.swift in Sources */,
 				B502A7AF2BAA28C700FCA90F /* ContentView.swift in Sources */,
 				B5D48FB22BAAC86B00FAB590 /* AddMemberView.swift in Sources */,
+				B519E1A42BCDDB0A00A2C786 /* AddNewPersonView-ViewModel.swift in Sources */,
 				B502A7C72BAA3A7700FCA90F /* AddEditEventView.swift in Sources */,
 				B5D48FC02BAACE9800FAB590 /* StringExtensions.swift in Sources */,
 				B502A7AD2BAA28C700FCA90F /* SmartSpliterApp.swift in Sources */,

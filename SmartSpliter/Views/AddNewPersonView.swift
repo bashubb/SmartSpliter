@@ -10,15 +10,15 @@ import SwiftUI
 
 struct AddNewPersonView: View {
     @EnvironmentObject var router: Router
-    @Environment(\.modelContext) var modelContext
     @Environment(\.dismiss) var dismiss
-    @State private var firstName: String = ""
-    @State private var lastName: String = ""
-    @State private var phoneNumber: String = ""
-    @Query var events: [Event]
     
+    @State private var viewModel: ViewModel
     
-    var eventId: UUID
+    var onSave: (Person) -> Void
+    
+    @FocusState var isFocusedName
+    @FocusState var isFocusedLastName
+    @FocusState var isFocusedPhone
     
     var body: some View {
         // If adding new person show buttons: save and add to event
@@ -29,57 +29,87 @@ struct AddNewPersonView: View {
                     dismiss()
                 } label: {
                     Text("Cancel")
+                        .foregroundStyle(.red)
                         .shadow(color: Color.black, radius: 0.2)
                         .padding()
                         .frame(maxWidth: .infinity)
-                        .background(.red.opacity(0.3))
+                        .background(.red.opacity(0.4))
                         .clipShape(.rect(cornerRadius: 10))
                 }
                 
                 Spacer()
                 
                 Button {
-                    addNewPerson()
+                    let newPerson = viewModel.createTotalyNewPerson()
+                    onSave(newPerson)
                     router.path.removeLast(router.path.count - 1)
                 } label : {
-                    Text("Save")
+                    Text("Save and add to Event")
+                        .foregroundStyle(viewModel.anyFieldEmpty ? .gray.opacity(0.2) : .green)
                         .shadow(color: Color.black, radius: 0.2)
                         .padding()
                         .frame(maxWidth: .infinity)
-                        .background(.green.opacity(0.3))
+                        .background(.green.opacity(0.4))
+                        .background(viewModel.anyFieldEmpty ? .gray.opacity(0.2) : .green.opacity(0.3))
                         .clipShape(.rect(cornerRadius: 10))
                 }
-                .disabled(firstName.isEmpty || phoneNumber.isEmpty)
+                .disabled(viewModel.anyFieldEmpty)
+            }
+            .buttonStyle(.plain)
+            .padding()
+            .padding(.horizontal)
+            
+            
+            
+            VStack(alignment: .leading) {
+                Text("First Name")
+                    .fontWeight(.semibold)
+                    .foregroundStyle(.secondary)
+                TextField("type name", text: $viewModel.firstName)
+                    .padding(10)
+                    .font(.title3)
+                    .focused($isFocusedName)
+                    .background(.white, in: RoundedRectangle(cornerRadius: 10))
+                    .overlay(RoundedRectangle(cornerRadius: 10).stroke(isFocusedName ? Color.green : Color.gray, lineWidth: isFocusedName ? 2 : 1))
+                
+                Divider()
+                
+                Text("Last Name")
+                    .fontWeight(.semibold)
+                    .foregroundStyle(.secondary)
+                TextField("type last name", text: $viewModel.lastName)
+                    .padding(10)
+                    .font(.title3)
+                    .focused($isFocusedLastName)
+                    .background(.white, in: RoundedRectangle(cornerRadius: 10))
+                    .overlay(RoundedRectangle(cornerRadius: 10).stroke(isFocusedLastName ? Color.green : Color.gray, lineWidth: isFocusedLastName ? 2 : 1))
+                
+                Divider()
+                
+                Text("Phone Number")
+                    .fontWeight(.semibold)
+                    .foregroundStyle(.secondary)
+                TextField("type phone number", text: $viewModel.phoneNumber)
+                    .padding(10)
+                    .font(.title3)
+                    .focused($isFocusedPhone)
+                    .background(.white, in: RoundedRectangle(cornerRadius: 10))
+                    .overlay(RoundedRectangle(cornerRadius: 10).stroke(isFocusedPhone ? Color.green : Color.gray, lineWidth: isFocusedPhone ? 2 : 1))
             }
             .padding()
             .padding(.horizontal)
-            .background(.bar)
-            
-            Form {
-                Section("First Name") {
-                    TextField("type name",text: $firstName)
-                }
-                Section("Last Name") {
-                    TextField("type last name", text: $lastName)
-                }
-                Section("Phone Number") {
-                    TextField("type phone number", text: $phoneNumber)
-                        .keyboardType(.namePhonePad)
-                }
-                
-            }
-            .scrollDisabled(true)
+            Spacer()
         }
+       
+    }
+    
+    init(newPerson: Person, onSave:@escaping (Person) -> Void) {
+        self.onSave = onSave
+        _viewModel = State(initialValue: ViewModel(newPerson: newPerson))
         
     }
     
-    func addNewPerson() {
-        let currentEventIndex = events.firstIndex { $0.id == eventId }!
-        let currentEvent = events[currentEventIndex]
-        let newPerson = Person(firstName: firstName, lastName: lastName, phoneNumber: phoneNumber)
-        let eventMember = EventMember(person: newPerson, event: currentEvent)
-        currentEvent.eventMembers.append(eventMember)
-    }
+
 }
 
 

@@ -9,25 +9,13 @@ import SwiftData
 import SwiftUI
 
 struct AddMemberView: View {
-    var eventId: UUID
-    
-    @Environment(\.modelContext) var modelContext
+   
     @Environment(\.dismiss) var dismiss
     @Query var events: [Event]
+    @State private var viewModel: ViewModel
     
-    @State var fetchedContacts = [Contact]()
-    @State private var showAddingView = false
-    
-    @State private var isConfirmationShowing = false
-    @State private var isAlertShowing = false
-    
-    @State private var repeatedMembers = [String]()
-    @State private var personToAddGroup = [Person]()
-    
-    var alertMessage: Text {
-        Text("Can not add ") +
-        Text(repeatedMembers, format: .list(type: .and)) +
-        Text(" - already in Event Members")
+    var currentEvent: Event {
+        viewModel.findCurrentEvent(events: events)
     }
     
     // UI to change
@@ -36,11 +24,12 @@ struct AddMemberView: View {
             HStack{
                 // button for add person by hand
                 Button{
-                    showAddingView = true
+                    viewModel.newPerson = viewModel.createNewPerson()
                     // when added go to AddEditView
                     //confirmation dialog
                 } label: {
                     Text("Add new person")
+                        .foregroundStyle(.blue)
                         .shadow(color: Color.black, radius: 0.2)
                         .padding()
                         .frame(maxWidth: .infinity)
@@ -50,97 +39,59 @@ struct AddMemberView: View {
                 
                 // add choosen contacts to event
                 Button{
-                    checkIfPersonCanBeAdded()
-                    checkForAlert()
+                    viewModel.checkIfPersonCanBeAdded(currentEvent: currentEvent)
+                    viewModel.checkForAlert()
                 } label: {
                     Text("Add choosen to event")
-                        .foregroundStyle(fetchedContacts.isEmpty ? .gray.opacity(0.2) : .green)
+                        .foregroundStyle(viewModel.fetchedContacts.isEmpty ? .gray.opacity(0.2) : .green)
                         .shadow(color: Color.black, radius: 0.2)
                         .padding()
                         .frame(maxWidth: .infinity)
-                        .background(fetchedContacts.isEmpty ? .gray.opacity(0.2) : .green.opacity(0.3))
+                        .background(viewModel.fetchedContacts.isEmpty ? .gray.opacity(0.2) : .green.opacity(0.3))
                         .clipShape(.rect(cornerRadius: 10))
                 }
             }
+            .buttonStyle(.plain)
             .padding(.top, 20)
             .padding(.horizontal)
             
             // screen for importing from contacts
             // fetch in contact format and convert to person and save as EventMembers
-            ImportPersonView(fetchedContacts: $fetchedContacts)
+            ImportPersonView(fetchedContacts: $viewModel.fetchedContacts)
         }
         .background(.bar)
-        .sheet(isPresented: $showAddingView) {
-            AddNewPersonView(eventId: eventId)
+        .sheet(item: $viewModel.newPerson) { person in
+            AddNewPersonView(newPerson: person) {
+                viewModel.addToEventMembers(personToAddGroup: [$0], currentEvent: currentEvent)
+            }
+            .presentationDetents([.medium])
+            .presentationBackground(.bar)
+            .presentationCornerRadius(20)
+            .presentationDragIndicator(.visible)
+            .presentationBackgroundInteraction(.disabled)
         }
-        .confirmationDialog("Want to add them ?", isPresented: $isConfirmationShowing) {
-            Button("OK") { 
-                addToEventMembers(personToAddGroup: personToAddGroup)
+        .confirmationDialog("Want to add them ?", isPresented: $viewModel.isConfirmationShowing) {
+            Button("OK") {
+                viewModel.addToEventMembers(personToAddGroup: viewModel.personToAddGroup, currentEvent: currentEvent)
                 dismiss()
             }
             Button("Cancel", role: .cancel) { }
         } message: {
-            Text("Do you want to add \(fetchedContacts.count) people to the Event Members ? ")
+            Text("Do you want to add \(viewModel.fetchedContacts.count) people to the Event Members ? ")
         }
-        .alert("Oops", isPresented: $isAlertShowing) { 
-            Button("OK") { 
-                addToEventMembers(personToAddGroup: personToAddGroup)
+        .alert("Oops", isPresented: $viewModel.isAlertShowing) {
+            Button("OK") {
+                viewModel.addToEventMembers(personToAddGroup: viewModel.personToAddGroup, currentEvent: currentEvent)
                 dismiss()
             }
         } message: {
-            alertMessage
+            viewModel.alertMessage
         }
     }
     
-    
-    func findCurrentEvent() -> Event {
-        let currentEventIndex = events.firstIndex { $0.id == eventId }!
-        let currentEvent = events[currentEventIndex]
-        
-        return currentEvent
-    }
-    
-    func personFromContacts() -> [Person] {
-        var newPersonGroup = [Person]()
-        for contact in fetchedContacts {
-            let newPerson =
-            Person(
-                id: contact.id,
-                firstName: contact.firstName,
-                lastName: contact.lastName,
-                phoneNumber: contact.phoneNumbers.components(separatedBy: ",").first?.trimmed() ?? ""
-            )
-            newPersonGroup.append(newPerson)
-        }
-        return newPersonGroup
-    }
-    
-    func addToEventMembers(personToAddGroup: [Person]) {
-        let currentEvent = findCurrentEvent()
-        for personToAdd in personToAddGroup {
-            let newEventMember = EventMember(person: personToAdd, event: currentEvent)
-            currentEvent.eventMembers.append(newEventMember)
-        }
-        
-    }
-    
-    func checkIfPersonCanBeAdded() {
-        let currentEvent = findCurrentEvent()
-        for personToAdd in personFromContacts() {
-            if currentEvent.eventMembers.contains(where: { $0.person.id == personToAdd.id }) {
-                repeatedMembers.append("\(personToAdd.firstName + " " + personToAdd.lastName)")
-            } else {
-                personToAddGroup.append(personToAdd)
-            }
-        }
-    }
-    
-    func checkForAlert() {
-        if repeatedMembers.isNotEmpty{
-            isAlertShowing = true
-        } else {
-            isConfirmationShowing = true
-        }
+    init(eventId: UUID) {
+        let viewModel = ViewModel(eventId: eventId)
+        _viewModel = State(initialValue: viewModel)
     }
 }
 
@@ -148,10 +99,11 @@ struct AddMemberView: View {
     do {
         let config = ModelConfiguration(isStoredInMemoryOnly: true)
         let container = try ModelContainer(for: Event.self, configurations: config)
+        let example = Event()
         
         return NavigationStack{
-            AddMemberView(eventId: UUID())
-                .modelContainer(container)
+            AddMemberView(eventId: example.id)
+
         }
     } catch {
         return Text("Failed to create container: \(error.localizedDescription)")

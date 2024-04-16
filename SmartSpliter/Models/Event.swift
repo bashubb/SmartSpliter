@@ -27,3 +27,10 @@ class Event: Equatable {
         lhs.id == rhs.id
     }
 }
+
+extension Event {
+    @MainActor
+    static var modelContext: ModelContext = {
+        return try! ModelContainer(for: Event.self).mainContext
+    }()
+}

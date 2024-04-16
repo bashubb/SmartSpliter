@@ -15,8 +15,7 @@ struct SmartSpliterApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .modelContainer(for: Event.self)
-                
+                .modelContainer(Event.modelContext.container)
         }
         .environmentObject(router)
     }
