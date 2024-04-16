@@ -96,3 +96,63 @@ enum NavigationType: String, Hashable {
     case addMember = "Add Member"
     case addExpense = "Add Expense"
 }
+
+
+//struct EventMemberCardView: View {
+//    var eventMember: EventMember
+//
+//    var body: some View {
+//        VStack(alignment: .leading) {
+//            HStack {
+//                VStack(alignment: .leading) {
+//                    Group {
+//                        Text(eventMember.person.firstName) +
+//                        Text(eventMember.person.lastName)
+//                    }
+//                    .font(.headline)
+//
+//                    Group {
+//                        Text(eventMember.person.phoneNumber)
+//                        Text(eventMember.wallet.formatted())
+//                    }
+//                    .font(.caption)
+//                }
+//
+//                Spacer()
+//
+//                VStack {
+//                    NavigationLink(value: eventMember) {
+//                        Image(systemName: "pencil")
+//                            .font(.title)
+//                    }
+//                    .buttonStyle(.bordered)
+//                    .tint(.yellow)
+//
+//                    Button{
+//
+//                    } label: {
+//                        Image(systemName: "trash")
+//                            .font(.title)
+//
+//                    }
+//                    .buttonStyle(.bordered)
+//                    .tint(.red.opacity(0.3))
+//
+//                }
+//            }
+//        }
+//        .frame(maxWidth: .infinity, alignment: .leading)
+//        .padding()
+//        .containerRelativeFrame(.horizontal)
+//        .background(.bar)
+//        .clipShape(RoundedRectangle(cornerRadius: 10))
+//        .shadow(radius: 2)
+//        .padding(4)
+//
+
+
+
+
+//if event.eventName.isEmpty {
+
+//}
