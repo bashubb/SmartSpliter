@@ -15,9 +15,21 @@ struct ContentView: View {
     @Query var events: [Event]
     
     
+    
+    
     var body: some View {
         NavigationStack(path: $router.path) {
             VStack {
+                Wave()
+                    .fill(.gray.opacity(0.1))
+                    .frame(height: 200)
+                    .overlay(Wave()
+                        .fill(Color.blue.opacity(0.2))
+                        .scaleEffect(x: -1))
+                    .overlay(NavigationTitle(title: "SmartSpliter", size: 45)
+                        .padding([.top,.leading], 20))
+                        
+                
                 if events.isEmpty {
                     Button {
                         addEvent()
@@ -48,7 +60,9 @@ struct ContentView: View {
                     }
                 }
             }
-            .navigationTitle("SmartSpliter")
+            .background(.bar)
+            .edgesIgnoringSafeArea(.top)
+            .toolbar(.hidden)
             .navigationDestination(for: Event.self){ event in
                 AddEditEventView(event: event)
             }
@@ -61,14 +75,16 @@ struct ContentView: View {
             .navigationDestination(for: UUID.self) { id in
                 AddMemberView(eventId: id)
             }
-            .toolbar {
-                if events.isNotEmpty {
-                    Button("Add Event", systemImage: "plus", action: addEvent)
-                }
-            }
+//            .toolbar {
+//                if events.isNotEmpty {
+//                    Button("Add Event", systemImage: "plus", action: addEvent)
+//                }
+//            }
         }
-        .fontDesign(.rounded)
+        .listStyle(.plain)
     }
+    
+    
     
     func addEvent() {
         let event = Event()

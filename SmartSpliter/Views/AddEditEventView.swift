@@ -56,19 +56,20 @@ struct AddEditEventView: View {
             }
             
             VStack(spacing:0){
-                // Summary of this event
+                Wave()
+                    .fill(.gray.opacity(0.1))
+                    .frame(height: 200)
+                    .overlay(Wave()
+                        .fill(Color.blue.opacity(0.2))
+                        .scaleEffect(x: -1))
+//                    .overlay(NavigationTitle(title: "Manage Your Event", size: 35)
+//                        .padding([.top,.leading], 20))
+                    .padding(.bottom)
                 VStack(spacing: 14){
-                    
-                    Text("Manage Your Event")
-                        .font(.largeTitle)
-                        .fontWeight(.heavy)
-                        .fontDesign(.rounded)
-                        .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, alignment: .leading)
-                        .padding(.vertical, 10)
                     
                     ZStack(alignment: .topTrailing) {
                         
-                        VStack(alignment: .leading) {
+                        VStack(alignment: .leading, spacing: 5) {
                             Text("Event Name:")
                                 .font(.callout)
                                 .foregroundStyle(.secondary)
@@ -76,8 +77,10 @@ struct AddEditEventView: View {
                             Text(event.eventName)
                                 .font(.title3)
                                 .fontWeight(.semibold)
-                                .padding(8)
-                                .background(RoundedRectangle(cornerRadius: 8).fill(.white))
+                            
+                            Divider()
+                                .padding(.bottom,3)
+                            
                             Text("Event date:")
                                 .font(.callout)
                                 .foregroundStyle(.secondary)
@@ -85,10 +88,6 @@ struct AddEditEventView: View {
                             Text(event.eventDate, style: .date)
                                 .font(.title3)
                                 .fontWeight(.semibold)
-                                .padding(8)
-                                .background(RoundedRectangle(cornerRadius: 8).fill(.white))
-                            
-                            
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding()
@@ -96,50 +95,50 @@ struct AddEditEventView: View {
                             .shadow(radius: 0.2))
                         
                         Button {
-                            withAnimation(.snappy(extraBounce: 0.1)){
+                            withAnimation(.spring.speed(1.5)){
                                 isEditing.toggle()
                             } completion: {
-                                withAnimation {
+                                withAnimation(.spring.speed(1.5)) {
                                     showEditingUI.toggle()
                                 }
                             }
                         } label: {
                             Image(systemName: "pencil")
                                 .font(.title).bold()
-                                .padding()
-                                .foregroundStyle(.white)
-                                .frame(width: 70)
-                                .background(Capsule().fill(.gray.opacity(0.5)).stroke(.gray, lineWidth:0.5)
+                                .padding(9)
+                                .background(Capsule().fill(.ultraThickMaterial)
                                     .matchedGeometryEffect(id: "edit", in: namespace))
                         }
-                        .padding()
+                        
+                        .padding(7)
                     }
                     
                     if isSummaryExpanded {
                         VStack {
-                            HStack {
-                                Image(systemName: "dollarsign.circle")
-                                    .font(.largeTitle)
-                                    .foregroundStyle(.orange)
-                                Text("Event Summary")
-                                    .fontWeight(.semibold)
-                                Spacer()
-                                Image(systemName: "chevron.down")
-                                    .font(.title)
-                                    .rotationEffect(isChevronSpining ? Angle(degrees: 180) : Angle(degrees: 0))
-                            }
-                            .onTapGesture {
-                                withAnimation {
+                            Button{
+                                withAnimation(.spring.speed(1.5)) {
                                     isChevronSpining.toggle()
                                 }
-                                withAnimation {
+                                withAnimation(.spring.speed(1.5)) {
                                     showSummaryContent.toggle()
                                 } completion: {
-                                    withAnimation {
+                                    withAnimation(.spring.speed(1.5)) {
                                         isSummaryExpanded.toggle()
                                     }
                                 }
+                            } label: {
+                                HStack {
+                                    Text("Hide Summary")
+                                        .fontWeight(.semibold)
+                                    Spacer()
+                                    Image(systemName: "chevron.down")
+                                        .font(.title)
+                                        .rotationEffect(isChevronSpining ? Angle(degrees: 180) : Angle(degrees: 0))
+                                }
                             }
+                            
+                                
+                            
         
                             VStack {
                                 HStack {
@@ -156,42 +155,42 @@ struct AddEditEventView: View {
                             .opacity(showSummaryContent ? 1 : 0)
                         }
                         .padding()
-                        .background(RoundedRectangle(cornerRadius: 10).fill(.white)
+                        .background(RoundedRectangle(cornerRadius: 10).fill(.blue.opacity(0.05))
                             .matchedGeometryEffect(id: "summary", in: namespace)
                             .shadow(radius: 0.2))
                         
                     } else {
                         VStack {
-                            HStack {
-                                Image(systemName: "dollarsign.circle")
-                                    .font(.largeTitle)
-                                    .foregroundStyle(.orange)
-                                Text("Event Summary")
-                                    .fontWeight(.semibold)
-                                Spacer()
-                                Image(systemName: "chevron.down")
-                                    .font(.title)
-                                    .rotationEffect(isChevronSpining ? Angle(degrees: 180) : Angle(degrees: 0))
-                            }
-                            .onTapGesture {
-                                withAnimation {
-                                    isSummaryExpanded.toggle()
-                                } completion : {
-                                    withAnimation {
-                                        showSummaryContent.toggle()
+                            Button {
+                                
+                                    withAnimation(.spring.speed(1.5)) {
+                                        isSummaryExpanded.toggle()
+                                    } completion : {
+                                        withAnimation(.spring.speed(1.5)) {
+                                            showSummaryContent.toggle()
+                                        }
+                                        withAnimation(.spring.speed(1.5)) {
+                                            isChevronSpining.toggle()
+                                        }
                                     }
-                                    withAnimation {
-                                        isChevronSpining.toggle()
-                                    }
+                            } label: {
+                                HStack {
+                                    Text("Show summary")
+                                        .fontWeight(.semibold)
+                                    Spacer()
+                                    Image(systemName: "chevron.down")
+                                        .font(.title)
+                                        .rotationEffect(isChevronSpining ? Angle(degrees: 180) : Angle(degrees: 0))
                                 }
                             }
                             
+                            
+                            
                         }
                         .padding()
-                        .background(RoundedRectangle(cornerRadius: 10).fill(.white)
+                        .background(RoundedRectangle(cornerRadius: 10).fill(.blue.opacity(0.05))
                             .matchedGeometryEffect(id: "summary", in: namespace)
                             .shadow(radius: 0.2))
-                        
                     }
                 }
                 .padding()
@@ -252,7 +251,6 @@ struct AddEditEventView: View {
                     }
                     
                     Section {
-                        // List of expenses - delete possibility - expense detailView(choose who from members is contributing in this expense - list of members - removable, how to split?(equaly, fixed amount, summary? )
                         if event.expenses.isEmpty {
                             Button {
                                 addExpense()
@@ -301,8 +299,10 @@ struct AddEditEventView: View {
                 .scrollIndicators(.hidden)
                 
             }
+            .edgesIgnoringSafeArea(.top)
         }
         .ignoresSafeArea(.keyboard)
+        .navigationTitle("Manage your event")
         .navigationBarBackButtonHidden(backButtonHidden)
         .toolbar {
             if backButtonHidden {
@@ -365,8 +365,6 @@ struct AddEditEventView: View {
     }
 }
 
-
-
 struct EditDetailsView: View {
     @Bindable var event: Event
     @FocusState var isFocused
@@ -379,14 +377,7 @@ struct EditDetailsView: View {
         VStack(spacing:14) {
             HStack{
                 Button{
-                    withAnimation {
-                        showEditingUI.toggle()
-                    }
-                    withAnimation(.snappy(extraBounce: 0.1).delay(0.2)) {
-                        isEditing.toggle()
-                    }
-                    
-                    
+                    closingAnimation()
                 } label: {
                     Text("Cancel")
                         .foregroundStyle(.red)
@@ -398,7 +389,9 @@ struct EditDetailsView: View {
                 }
                 
                 Button{
-                    
+                    event.eventName = name
+                    event.eventDate = date
+                    closingAnimation()
                 } label: {
                     Text("Save")
                         .foregroundStyle(name.isEmpty ? .gray.opacity(0.2) : .green)
@@ -423,9 +416,9 @@ struct EditDetailsView: View {
                         .font(.title3)
                         .focused($isFocused)
                     
-                    if  event.eventName.isNotEmpty {
+                    if  name.isNotEmpty {
                         Button {
-                            event.eventName = ""
+                            name = ""
                         } label: {
                             Image(systemName: "xmark.circle")
                                 .font(.title)
@@ -453,8 +446,21 @@ struct EditDetailsView: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
+        .onAppear {
+            name = event.eventName
+            date = event.eventDate
+        }
         .padding()
         .opacity(showEditingUI ? 1 : 0)
         
+    }
+    
+    func closingAnimation() {
+        withAnimation {
+            showEditingUI.toggle()
+        }
+        withAnimation(.snappy(extraBounce: 0.1).delay(0.2)) {
+            isEditing.toggle()
+        }
     }
 }
